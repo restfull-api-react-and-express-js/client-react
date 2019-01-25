@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 
 class Siswa extends Component {
   constructor() {
@@ -11,6 +13,10 @@ class Siswa extends Component {
   }
 
   componentDidMount() {
+    this.getData();
+  }
+
+  getData = () => {
     axios
       .get("http://localhost:3000/siswas")
       .then(res => {
@@ -18,7 +24,29 @@ class Siswa extends Component {
         this.setState({ siswa: res.data.data });
       })
       .catch(err => console.log(err));
-  }
+  };
+
+  handleDelete = id => {
+    axios
+      .delete(`http://localhost:3000/siswas/${id}`)
+      .then(res => {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        }).then(result => {
+          if (result.value) {
+            Swal.fire("Deleted!", "Your file has been deleted.", "success");
+          }
+        });
+        this.getData();
+      })
+      .catch(err => console.log(err));
+  };
   render() {
     return (
       <div>
@@ -38,6 +66,7 @@ class Siswa extends Component {
               <th>No. Telp</th>
               <th>Alamat</th>
               <th>Jurusan</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -49,6 +78,14 @@ class Siswa extends Component {
                   <td>{data.no_telp}</td>
                   <td>{data.alamat}</td>
                   <td>{data.jurusan}</td>
+                  <td>
+                    <button
+                      onClick={() => this.handleDelete(data.id)}
+                      className="btn btn-danger"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               );
             })}
