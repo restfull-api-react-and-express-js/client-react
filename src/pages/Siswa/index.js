@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 class Siswa extends Component {
   constructor() {
@@ -21,19 +22,28 @@ class Siswa extends Component {
   render() {
     return (
       <div>
-        <h1>Data Siswa</h1>
+        <h2>Data Siswa</h2>
+
+        <Link className="btn btn-primary" to="/siswa/create">
+          Tambah Siswa
+        </Link>
+        <br />
+        <br />
+
         <table className="table">
           <thead>
-            <th>Nis</th>
-            <th>Nama</th>
-            <th>No. Telp</th>
-            <th>Alamat</th>
-            <th>Jurusan</th>
+            <tr>
+              <th>Nis</th>
+              <th>Nama</th>
+              <th>No. Telp</th>
+              <th>Alamat</th>
+              <th>Jurusan</th>
+            </tr>
           </thead>
           <tbody>
             {this.state.siswa.map((data, index) => {
               return (
-                <tr>
+                <tr key={index}>
                   <td>{data.nis}</td>
                   <td>{data.nama}</td>
                   <td>{data.no_telp}</td>
