@@ -27,26 +27,31 @@ class Siswa extends Component {
   };
 
   handleDelete = id => {
-    axios
-      .delete(`http://localhost:3000/siswas/${id}`)
-      .then(res => {
-        Swal.fire({
-          title: "Are you sure?",
-          text: "You won't be able to revert this!",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, delete it!"
-        }).then(result => {
-          if (result.value) {
-            Swal.fire("Deleted!", "Your file has been deleted.", "success");
-          }
-        });
-        this.getData();
-      })
-      .catch(err => console.log(err));
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(result => {
+      if (result.value) {
+        axios
+          .delete(`http://localhost:3000/siswas/${id}`)
+          .then(res => {
+            this.getData();
+          })
+          .catch(err => console.log(err));
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      }
+    });
   };
+
+  handleEdit = id => {
+    this.props.history.push(`/siswa/edit/${id}`);
+  };
+
   render() {
     return (
       <div>
@@ -66,7 +71,9 @@ class Siswa extends Component {
               <th>No. Telp</th>
               <th>Alamat</th>
               <th>Jurusan</th>
-              <th>Aksi</th>
+              <th colSpan="2">
+                <center>Aksi</center>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -78,6 +85,14 @@ class Siswa extends Component {
                   <td>{data.no_telp}</td>
                   <td>{data.alamat}</td>
                   <td>{data.jurusan}</td>
+                  <td>
+                    <button
+                      onClick={() => this.handleEdit(data.id)}
+                      className="btn btn-warning"
+                    >
+                      Edit
+                    </button>
+                  </td>
                   <td>
                     <button
                       onClick={() => this.handleDelete(data.id)}
