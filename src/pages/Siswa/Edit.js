@@ -16,15 +16,23 @@ class SiswaEdit extends Component {
   }
   handleSubmit = e => {
     const siswaId = this.props.match.params.id;
+    const token = localStorage.getItem("token");
+    const headers = {
+      token: token
+    };
     const { nis, nama, no_telp, alamat, jurusan } = this.state;
     axios
-      .put(`http://localhost:3000/siswas/${siswaId}`, {
-        nis,
-        nama,
-        no_telp,
-        alamat,
-        jurusan
-      })
+      .put(
+        `http://localhost:3000/siswas/${siswaId}`,
+        {
+          nis,
+          nama,
+          no_telp,
+          alamat,
+          jurusan
+        },
+        { headers }
+      )
       .then(res => {
         console.log(res);
         Swal.fire("Good job!", "You clicked the button!", "success");
@@ -41,17 +49,27 @@ class SiswaEdit extends Component {
 
   getData = () => {
     const siswaId = this.props.match.params.id;
-    axios.get(`http://localhost:3000/siswas/${siswaId}`).then(res => {
-      //   console.log(res);
-      const { nis, nama, no_telp, alamat, jurusan } = res.data.data;
-      this.setState({
-        nis,
-        nama,
-        no_telp,
-        alamat,
-        jurusan
-      });
-    });
+    const token = localStorage.getItem("token");
+    const headers = {
+      token: token
+    };
+    if (!token) {
+      return (window.location = "/");
+    } else {
+      axios
+        .get(`http://localhost:3000/siswas/${siswaId}`, { headers })
+        .then(res => {
+          //   console.log(res);
+          const { nis, nama, no_telp, alamat, jurusan } = res.data.data;
+          this.setState({
+            nis,
+            nama,
+            no_telp,
+            alamat,
+            jurusan
+          });
+        });
+    }
   };
 
   handleChange = e => {

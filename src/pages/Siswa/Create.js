@@ -16,14 +16,22 @@ class SiswaCreate extends Component {
   }
   handleSubmit = e => {
     const { nis, nama, no_telp, alamat, jurusan } = this.state;
+    const token = localStorage.getItem("token");
+    const headers = {
+      token: token
+    };
     axios
-      .post("http://localhost:3000/siswas/create", {
-        nis,
-        nama,
-        no_telp,
-        alamat,
-        jurusan
-      })
+      .post(
+        "http://localhost:3000/siswas/create",
+        {
+          nis,
+          nama,
+          no_telp,
+          alamat,
+          jurusan
+        },
+        { headers }
+      )
       .then(res => {
         console.log(res);
         Swal.fire("Good job!", "You clicked the button!", "success");

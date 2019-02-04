@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 class Navbar extends Component {
   render() {
+    const token = localStorage.token;
     return (
       <div>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -33,6 +34,20 @@ class Navbar extends Component {
                   Siswa
                 </Link>
               </li>
+              {!token && (
+                <li className="nav-item">
+                  <Link to="/login" className="nav-link">
+                    Login
+                  </Link>
+                </li>
+              )}
+              {token && (
+                <li className="nav-item">
+                  <Link to="/logout" className="nav-link">
+                    Logout
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </nav>

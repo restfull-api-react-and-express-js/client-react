@@ -21,13 +21,17 @@ class Siswa extends Component {
     const headers = {
       token: token
     };
-    axios
-      .get("http://localhost:3000/siswas", { headers })
-      .then(res => {
-        console.log(res);
-        this.setState({ siswa: res.data.data });
-      })
-      .catch(err => console.log(err));
+    if (!token) {
+      return (window.location = "/");
+    } else {
+      axios
+        .get("http://localhost:3000/siswas", { headers })
+        .then(res => {
+          console.log(res);
+          this.setState({ siswa: res.data.data });
+        })
+        .catch(err => console.log(err));
+    }
   };
 
   handleDelete = id => {
@@ -41,8 +45,12 @@ class Siswa extends Component {
       confirmButtonText: "Yes, delete it!"
     }).then(result => {
       if (result.value) {
+        const token = localStorage.getItem("token");
+        const headers = {
+          token: token
+        };
         axios
-          .delete(`http://localhost:3000/siswas/${id}`)
+          .delete(`http://localhost:3000/siswas/${id}`, { headers })
           .then(res => {
             this.getData();
           })
