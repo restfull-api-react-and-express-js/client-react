@@ -17,8 +17,12 @@ class Siswa extends Component {
   }
 
   getData = () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      token: token
+    };
     axios
-      .get("http://localhost:3000/siswas")
+      .get("http://localhost:3000/siswas", { headers })
       .then(res => {
         console.log(res);
         this.setState({ siswa: res.data.data });
