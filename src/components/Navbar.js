@@ -29,11 +29,14 @@ class Navbar extends Component {
                   Home <span className="sr-only">(current)</span>
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/siswa">
-                  Siswa
-                </Link>
-              </li>
+              {token && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/siswa">
+                    Siswa
+                  </Link>
+                </li>
+              )
+              }
               {!token && (
                 <li className="nav-item">
                   <Link to="/login" className="nav-link">

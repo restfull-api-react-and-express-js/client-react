@@ -22,8 +22,7 @@ class Login extends Component {
       .then(res => {
         const token = res.data.data.token;
         localStorage.setItem("token", token);
-        this.props.history.push("/");
-        console.log(res);
+        this.props.history.push("/siswa");
       })
       .catch(err => {
         this.setState({ message: "Pastikan Email dan Password Anda Benar" });
